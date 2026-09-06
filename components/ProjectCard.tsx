@@ -13,8 +13,8 @@ export default function ProjectCard({ project, index }: { project: Project; inde
       whileInView={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.96 }}
       viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.55, delay: (index % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -6 }}
+      transition={{ duration: 0.55, delay: index * 0.15, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -6, rotateX: "-2deg", rotateY: "2deg" }}
       className={`group relative flex flex-col overflow-hidden rounded-3xl border bg-[#0b0620]/70 backdrop-blur-xl transition-colors duration-300 ${
         project.featured
           ? "border-violet-400/40 shadow-[0_0_50px_rgba(139,92,246,0.25)] hover:border-violet-300/70"

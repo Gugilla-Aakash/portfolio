@@ -190,11 +190,62 @@ body {
   opacity: 0.05;
 }
 
+@keyframes bg-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(-1px, 1px);
+  }
+  66% {
+    transform: translate(1px, -1px);
+  }
+}
+
+@keyframes glow-breathe {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes particle-drift {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  100% {
+    transform: translateY(-10px) translateX(5px);
+  }
+}
+
+.animate-bg-drift {
+  animation: bg-drift 20s ease-in-out infinite;
+}
+
+.animate-glow-breathe {
+  animation: glow-breathe 4s ease-in-out infinite;
+}
+
+.animate-particle-drift {
+  animation: particle-drift 8s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-float-slow,
   .animate-scroll-dot,
   .animate-blink,
-  .animate-pulse-ring {
-    animation: none;
+  .animate-pulse-ring,
+  .animate-bg-drift,
+  .animate-glow-breathe,
+  .animate-particle-drift {
+    animation: none !important;
+  }
+  .group-hover\:scale-105,
+  .group-hover\:translate-y-\[-6px\ {
+    transition: none !important;
   }
 }

@@ -85,29 +85,44 @@ export default function Projects() {
             const Icon = FILTER_ICONS[f.value] ?? LayoutGrid;
             const active = filter === f.value;
             return (
-              <button
+              <motion.button
                 key={f.value}
                 role="tab"
                 aria-selected={active}
                 onClick={() => setFilter(f.value)}
+                whileHover={{ y: -2, scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
                 className={`inline-flex items-center gap-2.5 rounded-full border px-6 py-3 text-sm font-medium transition-all duration-300 ${
                   active
                     ? "btn-primary-glow border-violet-300/60 bg-violet-600/25 text-white"
-                    : "border-white/12 bg-white/[0.03] text-white/65 backdrop-blur-md hover:border-violet-400/40 hover:text-white"
+                    : "border-white/12 bg-white/[0.03] text-white/65 backdrop-blur-md hover:border-violet-400/40 hover:text-white hover:shadow-[0_0_20px_rgba(139,92,246,0.3)]"
                 }`}
               >
                 <Icon className="h-4 w-4" />
                 {f.label}
-              </button>
+              </motion.button>
             );
           })}
         </motion.div>
 
         {/* Grid */}
-        <motion.div layout className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <motion.div
+          layout
+          className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"
+        >
           <AnimatePresence mode="popLayout">
             {visible.map((p, i) => (
-              <ProjectCard key={p.id} project={p} index={i} />
+              <motion.article
+                key={p.id}
+                layout
+                initial={{ opacity: 0, y: 70, rotateX: 10, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.6, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <ProjectCard project={p} index={i} />
+              </motion.article>
             ))}
           </AnimatePresence>
         </motion.div>
