@@ -6,19 +6,28 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const LINKS = [
-  { label: "Home", href: "#", active: true },
-  { label: "About", href: "#about", active: false },
-  { label: "Projects", href: "https://github.com/Gugilla-Aakash", active: false },
-  { label: "Skills", href: "#skills", active: false },
-  { label: "Contact", href: "https://www.linkedin.com/in/gugilla-aakash", active: false },
+  { label: "Home", href: "#top" },
+  { label: "About", href: "#about" },
+  { label: "Projects", href: "#projects" },
+  { label: "Skills", href: "#skills" },
+  { label: "Contact", href: "https://www.linkedin.com/in/gugilla-aakash" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("Home");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 24);
+      // Scroll-spy: Projects becomes active once its section reaches the nav
+      const el = document.getElementById("projects");
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        setActive(rect.top <= 140 ? "Projects" : "Home");
+      }
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -35,7 +44,7 @@ export default function Navbar() {
     >
       <nav className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
         {/* Logo */}
-        <a href="#" className="group flex items-center gap-2.5">
+        <a href="#top" className="group flex items-center gap-2.5">
           <span className="relative block h-10 w-10 overflow-hidden rounded-xl">
             <Image
               src="/logo.png"
@@ -53,25 +62,28 @@ export default function Navbar() {
 
         {/* Desktop links */}
         <ul className="hidden items-center gap-9 lg:flex">
-          {LINKS.map((l) => (
-            <li key={l.label}>
-              <a
-                href={l.href}
-                target={l.href.startsWith("http") ? "_blank" : undefined}
-                rel={l.href.startsWith("http") ? "noreferrer" : undefined}
-                className={`group relative text-[15px] transition-colors ${
-                  l.active ? "font-medium text-violet-300" : "text-white/70 hover:text-white"
-                }`}
-              >
-                {l.label}
-                <span
-                  className={`absolute -bottom-2 left-0 h-[2px] rounded-full bg-gradient-to-r from-indigo-400 to-violet-400 transition-all duration-300 ${
-                    l.active ? "w-full shadow-[0_0_12px_rgba(139,92,246,0.9)]" : "w-0 group-hover:w-full"
+          {LINKS.map((l) => {
+            const isActive = l.label === active;
+            return (
+              <li key={l.label}>
+                <a
+                  href={l.href}
+                  target={l.href.startsWith("http") ? "_blank" : undefined}
+                  rel={l.href.startsWith("http") ? "noreferrer" : undefined}
+                  className={`group relative text-[15px] transition-colors ${
+                    isActive ? "font-medium text-violet-300" : "text-white/70 hover:text-white"
                   }`}
-                />
-              </a>
-            </li>
-          ))}
+                >
+                  {l.label}
+                  <span
+                    className={`absolute -bottom-2 left-0 h-[2px] rounded-full bg-gradient-to-r from-indigo-400 to-violet-400 transition-all duration-300 ${
+                      isActive ? "w-full shadow-[0_0_12px_rgba(139,92,246,0.9)]" : "w-0 group-hover:w-full"
+                    }`}
+                  />
+                </a>
+              </li>
+            );
+          })}
         </ul>
 
         {/* CTA */}
@@ -109,7 +121,7 @@ export default function Navbar() {
                     href={l.href}
                     onClick={() => setOpen(false)}
                     className={`block rounded-lg px-3 py-2.5 text-[15px] transition ${
-                      l.active
+                      l.label === active
                         ? "bg-violet-500/15 text-violet-200"
                         : "text-white/75 hover:bg-white/5 hover:text-white"
                     }`}

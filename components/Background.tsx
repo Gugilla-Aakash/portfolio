@@ -38,7 +38,7 @@ export default function Background({
   };
 
   return (
-    <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+    <div className="fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
       {/* Parallax video layer (desktop) */}
       <motion.div style={{ x: bgX, y: bgY }} className="absolute -inset-6 hidden md:block">
         <video
