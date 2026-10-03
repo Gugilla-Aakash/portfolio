@@ -5,7 +5,6 @@ import { Brain, Code2, Globe, LayoutGrid, Wrench } from "lucide-react";
 import { useMemo, useState } from "react";
 import { FILTERS, PROJECTS, type ProjectCategory } from "../data/projects";
 import ProjectCard from "./ProjectCard";
-import StatsBar from "./StatsBar";
 
 const FILTER_ICONS: Record<string, typeof LayoutGrid> = {
   All: LayoutGrid,
@@ -127,7 +126,7 @@ export default function Projects() {
           </AnimatePresence>
         </motion.div>
 
-        {/* Bottom handwritten note + stats */}
+        {/* Bottom handwritten note */}
         <div className="relative mt-14">
           <span
             aria-hidden="true"
@@ -139,9 +138,6 @@ export default function Projects() {
             <br />
             Grow
           </span>
-          <div className="mx-auto max-w-4xl">
-            <StatsBar />
-          </div>
         </div>
       </div>
     </section>
