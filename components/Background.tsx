@@ -38,7 +38,7 @@ export default function Background({
   };
 
   return (
-    <div className="fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+    <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
       {/* Parallax video layer (desktop) */}
       <motion.div style={{ x: bgX, y: bgY }} className="absolute -inset-6 hidden md:block">
         <video
@@ -48,8 +48,8 @@ export default function Background({
           muted
           loop
           playsInline
-          preload="auto"
-          poster="/hero-poster.png"
+          preload="metadata"
+          poster="/hero-poster.webp"
         >
           <source src="/hero-bg.mp4" type="video/mp4" />
         </video>
@@ -58,7 +58,7 @@ export default function Background({
       {/* Static poster fallback (mobile — saves data + battery) */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/hero-poster.png"
+        src="/hero-poster.webp"
         alt=""
         className="absolute inset-0 h-full w-full object-cover md:hidden"
       />

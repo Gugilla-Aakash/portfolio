@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { Mouse } from "lucide-react";
 import HeroContent from "./HeroContent";
-import StatsBar from "./StatsBar";
 
 export default function Hero() {
   const scrollToProjects = (e: React.MouseEvent) => {
@@ -17,7 +16,6 @@ export default function Hero() {
         <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
             <HeroContent />
-            <StatsBar />
           </div>
           {/* Right column intentionally empty — lets the developer / globe art breathe. */}
           <div className="hidden lg:block" aria-hidden="true">
@@ -59,7 +57,7 @@ export default function Hero() {
         </motion.a>
 
         {/* Bottom-left live badge (mobile shows here to avoid overlap) */}
-        <div className="absolute -bottom-2 left-5 flex items-center gap-2 text-xs text-white/40 md:hidden">
+        <div className="absolute -bottom-2 left-5 flex items-center gap-2 text-xs text-white/60 md:hidden">
           <Mouse className="h-4 w-4" /> Scroll to explore
         </div>
       </div>

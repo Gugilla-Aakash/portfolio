@@ -5,12 +5,12 @@ import { ArrowRight, Menu, X } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const LINKS = [
+export const LINKS = [
   { label: "Home", href: "#top" },
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
   { label: "Skills", href: "#skills" },
-  { label: "Contact", href: "https://www.linkedin.com/in/gugilla-aakash" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
@@ -21,12 +21,20 @@ export default function Navbar() {
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 24);
-      // Scroll-spy: Projects becomes active once its section reaches the nav
-      const el = document.getElementById("projects");
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        setActive(rect.top <= 140 ? "Projects" : "Home");
-      }
+      // Scroll-spy: Contact -> Skills -> Projects -> About -> Home
+      const contactEl = document.getElementById("contact");
+      const skillsEl = document.getElementById("skills");
+      const projectsEl = document.getElementById("projects");
+      const aboutEl = document.getElementById("about");
+      const contactTop = contactEl?.getBoundingClientRect().top ?? Infinity;
+      const skillsTop = skillsEl?.getBoundingClientRect().top ?? Infinity;
+      const projectsTop = projectsEl?.getBoundingClientRect().top ?? Infinity;
+      const aboutTop = aboutEl?.getBoundingClientRect().top ?? Infinity;
+      if (contactTop <= 140) setActive("Contact");
+      else if (skillsTop <= 140) setActive("Skills");
+      else if (projectsTop <= 140) setActive("Projects");
+      else if (aboutTop <= 140) setActive("About");
+      else setActive("Home");
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -47,7 +55,7 @@ export default function Navbar() {
         <a href="#top" className="group flex items-center gap-2.5">
           <span className="relative block h-10 w-10 overflow-hidden rounded-xl">
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="Aakash logo"
               width={80}
               height={80}
@@ -98,6 +106,7 @@ export default function Navbar() {
         <button
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"
+          aria-expanded={open}
           className="glass flex h-11 w-11 items-center justify-center rounded-xl text-white lg:hidden"
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -119,7 +128,19 @@ export default function Navbar() {
                 <li key={l.label}>
                   <a
                     href={l.href}
-                    onClick={() => setOpen(false)}
+                    onClick={(e) => {
+                      // Closing the menu synchronously cancels the browser's
+                      // fragment scroll / smooth scrollIntoView — navigate
+                      // manually and scroll once the menu exit animation ends.
+                      e.preventDefault();
+                      setOpen(false);
+                      history.pushState(null, "", l.href);
+                      setTimeout(() => {
+                        document
+                          .getElementById(l.href.slice(1))
+                          ?.scrollIntoView({ behavior: "smooth" });
+                      }, 350);
+                    }}
                     className={`block rounded-lg px-3 py-2.5 text-[15px] transition ${
                       l.label === active
                         ? "bg-violet-500/15 text-violet-200"

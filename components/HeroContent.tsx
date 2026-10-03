@@ -120,19 +120,17 @@ export default function HeroContent() {
         className="mt-7 flex flex-wrap items-center gap-4"
       >
         <a
-          href="https://github.com/Gugilla-Aakash"
-          target="_blank"
-          rel="noreferrer"
+          href="#projects"
           className="btn-primary-glow shimmer-sweep group inline-flex items-center gap-2.5 rounded-2xl bg-gradient-to-r from-violet-600 via-indigo-600 to-indigo-500 px-7 py-3.5 text-[15px] font-semibold text-white transition-transform duration-300 hover:-translate-y-0.5 hover:scale-[1.02] active:scale-[0.98]"
         >
           View My Work
           <ArrowRight className="h-[18px] w-[18px] transition-transform duration-300 group-hover:translate-x-1.5" />
         </a>
         <a
-          href="https://www.linkedin.com/in/gugilla-aakash"
+          href="/resume.pdf"
           target="_blank"
           rel="noreferrer"
-          title="Resume coming soon — connect on LinkedIn"
+          title="Open résumé (PDF)"
           className="group inline-flex items-center gap-2.5 rounded-2xl border border-white/20 bg-white/[0.03] px-7 py-3.5 text-[15px] font-medium text-white/90 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-violet-300/60 hover:bg-violet-500/10 hover:text-white hover:shadow-[0_8px_30px_rgba(139,92,246,0.35)]"
         >
           <Download className="h-[18px] w-[18px] transition-transform duration-300 group-hover:translate-y-0.5" />
@@ -160,7 +158,7 @@ export default function HeroContent() {
         >
           <LinkedinIcon className="h-5 w-5" />
         </SocialButton>
-        <span className="ml-2 hidden items-center gap-2 text-xs text-white/40 sm:flex">
+        <span className="ml-2 hidden items-center gap-2 text-xs text-white/60 sm:flex">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
