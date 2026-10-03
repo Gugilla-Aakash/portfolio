@@ -1,6 +1,30 @@
 import { Resend } from "resend";
 import { z } from "zod";
 
+export const runtime = "nodejs";
+
+// Lightweight in-memory rate limiter (best-effort per serverless instance).
+const RATE_WINDOW_MS = 60_000;
+const RATE_MAX = 5;
+const rateHits = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  if (rateHits.size > 1_000) {
+    for (const [key, times] of rateHits) {
+      if (times.every((t) => now - t >= RATE_WINDOW_MS)) rateHits.delete(key);
+    }
+  }
+  const recent = (rateHits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  if (recent.length >= RATE_MAX) {
+    rateHits.set(ip, recent);
+    return true;
+  }
+  recent.push(now);
+  rateHits.set(ip, recent);
+  return false;
+}
+
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required.").max(100, "Name must be 100 characters or fewer."),
   email: z
@@ -34,6 +58,17 @@ function fieldRow(label: string, value: string): string {
 }
 
 export async function POST(request: Request): Promise<Response> {
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown";
+  if (isRateLimited(ip)) {
+    return Response.json(
+      { ok: false, error: "Too many requests. Please try again in a minute." },
+      { status: 429 },
+    );
+  }
+
   let json: unknown;
   try {
     json = await request.json();

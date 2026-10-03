@@ -56,6 +56,27 @@ export const metadata: Metadata = {
   },
 };
 
+// Structured data — only facts present on this website.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      name: "Aakash",
+      url: "https://aakashgugilla.is-a.dev",
+      sameAs: [
+        "https://github.com/Gugilla-Aakash",
+        "https://www.linkedin.com/in/gugilla-aakash",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      name: "Aakash — I build solutions for a better tomorrow",
+      url: "https://aakashgugilla.is-a.dev",
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -64,6 +85,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${sora.variable} ${caveat.variable} h-full`}>
       <body className="min-h-full bg-[#05010f] text-[#f4f2ff] antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
         {children}
       </body>
     </html>
