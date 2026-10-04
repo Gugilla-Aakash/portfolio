@@ -130,6 +130,7 @@ export default function Contact() {
       {/* Full-bleed cinematic background — contact.mp4 with contact.png fallback */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <video
+          aria-hidden="true"
           className="block h-full w-full object-cover max-[736px]:hidden"
           autoPlay
           muted

@@ -22,6 +22,7 @@ const caveat = Caveat({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://aakashgugilla.is-a.dev"),
+  applicationName: "Aakash — Portfolio",
   title: "Aakash — I build solutions for a better tomorrow",
   description:
     "Aakash is a passionate developer turning ideas into real-world applications with focus on impact, usability, and innovation. Based in Hyderabad, India.",

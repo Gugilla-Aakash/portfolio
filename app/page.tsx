@@ -57,6 +57,7 @@ export default function Home() {
         <div className="relative overflow-hidden">
           <div className="absolute inset-0 z-0 overflow-hidden">
             <video
+              aria-hidden="true"
               className="block h-full w-full object-cover max-[736px]:hidden"
               autoPlay
               muted
@@ -86,6 +87,7 @@ export default function Home() {
         <div className="relative">
           <div className="absolute inset-0 z-0 overflow-hidden">
             <video
+              aria-hidden="true"
               className="block h-full w-full object-cover max-[736px]:hidden"
               autoPlay
               muted
@@ -112,6 +114,7 @@ export default function Home() {
           <div className="absolute inset-0 z-0 overflow-hidden">
             <div className="absolute left-0 top-0 h-screen w-full overflow-hidden">
               <video
+                aria-hidden="true"
                 className="block h-full w-full object-cover object-center max-[736px]:hidden"
                 autoPlay
                 muted
