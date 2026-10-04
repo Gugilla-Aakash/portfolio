@@ -1,45 +1,8 @@
 import { Resend } from "resend";
-import { z } from "zod";
+import { contactSchema } from "../../../lib/contact-schema";
+import { isRateLimited } from "../../../lib/rate-limit";
 
 export const runtime = "nodejs";
-
-// Lightweight in-memory rate limiter (best-effort per serverless instance).
-const RATE_WINDOW_MS = 60_000;
-const RATE_MAX = 5;
-const rateHits = new Map<string, number[]>();
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  if (rateHits.size > 1_000) {
-    for (const [key, times] of rateHits) {
-      if (times.every((t) => now - t >= RATE_WINDOW_MS)) rateHits.delete(key);
-    }
-  }
-  const recent = (rateHits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
-  if (recent.length >= RATE_MAX) {
-    rateHits.set(ip, recent);
-    return true;
-  }
-  recent.push(now);
-  rateHits.set(ip, recent);
-  return false;
-}
-
-const contactSchema = z.object({
-  name: z.string().trim().min(1, "Name is required.").max(100, "Name must be 100 characters or fewer."),
-  email: z
-    .string()
-    .trim()
-    .min(1, "Email is required.")
-    .max(254, "Email must be 254 characters or fewer.")
-    .email("Please enter a valid email address."),
-  subject: z.string().trim().min(1, "Subject is required.").max(200, "Subject must be 200 characters or fewer."),
-  message: z
-    .string()
-    .trim()
-    .min(10, "Message must be at least 10 characters.")
-    .max(5000, "Message must be 5000 characters or fewer."),
-});
 
 function escapeHtml(value: string): string {
   return value
