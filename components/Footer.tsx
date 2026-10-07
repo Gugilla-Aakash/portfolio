@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { Activity, ArrowRight, ArrowUpRight, Heart, Mail, Sparkle } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { LINKS } from "./Navbar";
 import { GithubIcon, LinkedinIcon } from "./SocialIcons";
 
@@ -21,6 +23,13 @@ const OTHERS = [
 const DIVIDER = "min-w-0 lg:border-l lg:border-white/10 lg:pl-10";
 
 export default function Footer() {
+  // On pages other than home (e.g. /privacy), hash links must route back to /#...
+  // to keep Quick Links working site-wide. Home behavior is unchanged.
+  const pathname = usePathname();
+  const onHome = pathname === "/";
+  const homeHash = (hash: string) => (onHome ? hash : `/${hash}`);
+  const isPrivacy = pathname === "/privacy";
+
   return (
     <footer className="relative overflow-hidden">
       {/* Full-bleed cinematic background — footer.png */}
@@ -135,7 +144,7 @@ export default function Footer() {
               {LINKS.map((l) => (
                 <li key={l.label}>
                   <a
-                    href={l.href}
+                    href={homeHash(l.href)}
                     className="group flex items-center justify-between gap-6 py-0.5 text-[15px] text-white/65 transition-colors hover:text-white"
                   >
                     <span>{l.label}</span>
@@ -187,7 +196,7 @@ export default function Footer() {
               Open to collaborations, interesting projects, and exciting opportunities.
             </p>
             <a
-              href="#contact"
+              href={homeHash("#contact")}
               className="group mt-5 inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 px-6 text-[15px] font-semibold text-white shadow-[0_0_30px_rgba(109,80,246,0.45)] transition-all duration-300 hover:brightness-110 hover:shadow-[0_0_40px_rgba(124,58,237,0.65)] active:scale-[0.99]"
             >
               <Mail className="h-4 w-4" />
@@ -207,6 +216,18 @@ export default function Footer() {
         >
           <p className="text-center text-[13.5px] text-white/55 sm:text-left">
             © 2026 Aakash. All rights reserved.
+            <span className="mx-1.5 text-white/25">|</span>
+            <Link
+              href="/privacy"
+              aria-current={isPrivacy ? "page" : undefined}
+              className={`underline-offset-4 transition-colors hover:underline ${
+                isPrivacy
+                  ? "text-violet-300 hover:text-violet-200"
+                  : "hover:text-white"
+              }`}
+            >
+              Privacy
+            </Link>
           </p>
           <div className="hidden items-center gap-2.5 md:flex">
             <Activity className="h-3.5 w-3.5 text-violet-400" />
